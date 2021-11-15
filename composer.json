@@ -1,0 +1,11 @@
+{
+    "require": {
+        "slim/slim": "~3.8",
+        "illuminate/database": "~5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Shelter\\" : "src/Shelter/"
+        }
+    }
+}
