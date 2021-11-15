@@ -68,4 +68,15 @@ class Animal extends Model
         }
         return $sort_key_array;
     }
+    public static function searchAnimals($terms)
+    {
+        if (is_numeric($terms)) {
+            $query = self::where('animal_ID', "like", "%$terms%");
+        } else {
+            $query = self::where('animal_name', 'like', "%$terms%")
+                ->orWhere('animal_breed', 'like', "%$terms%") ->orWhere('animal_type', 'like', "%$terms%");
+        }
+        $results = $query->get();
+        return $results;
+    }
 }
