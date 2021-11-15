@@ -2,6 +2,9 @@
 
 Animal shelter API created in PHP
 
+View the full API documentation here:
+https://chase-1.gitbook.io/shelterapi/
+
 ### Mamp:
 - Running on port **3306**
 
