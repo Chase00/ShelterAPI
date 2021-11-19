@@ -30,10 +30,12 @@ $app->get('/animals', function ($request, $response, array $args) {
 
     // 10 items per page
     $limit = array_key_exists('limit', $params) ? (int)$params['limit'] : 10;
+
     // offset of the first item
     $offset = array_key_exists('offset', $params) ? (int)$params['offset'] : 0;
-// offset of the first item
-//Get search terms
+
+    // offset of the first item
+    //Get search terms
     $term = array_key_exists('q', $params) ? $params['q'] : null;
     if (!is_null($term)) {
         $Animals = Animal::searchAnimals($term);
@@ -51,17 +53,22 @@ $app->get('/animals', function ($request, $response, array $args) {
     } else {
         //Pagination
         $links = Animal::getLinks($request, $limit, $offset);
-// Sorting.
+
+        // Sorting.
         $sort_key_array = Animal::getSortKeys($request);
         $query = Animal::with('customer');
-//$query = Animal::all();
+
+        //$query = Animal::all();
         $query = $query->skip($offset)->take($limit); // limit the rows
-// sort the output by one or more columns
+
+        // sort the output by one or more columns
         foreach ($sort_key_array as $column => $direction) {
             $query->orderBy($column, $direction);
         }
+
         $Animals = $query->get();
         $payload = [];
+
         foreach ($Animals as $_a) {
             $payload[$_a->animal_ID] = [
                 'animal_name' => $_a->animal_name,
