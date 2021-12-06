@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 15, 2021 at 02:51 AM
+-- Generation Time: Dec 06, 2021 at 07:51 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.16
 
@@ -108,6 +108,8 @@ INSERT INTO `customer` (`customer_ID`, `customer_name`, `customer_age`, `custome
 
 CREATE TABLE `employee` (
   `employee_ID` int(25) NOT NULL,
+  `employee_username` varchar(32) NOT NULL,
+  `employee_password` varchar(64) NOT NULL,
   `employee_first_name` varchar(20) NOT NULL,
   `employee_last_name` varchar(20) NOT NULL,
   `employee_date_joined` date NOT NULL,
@@ -118,12 +120,13 @@ CREATE TABLE `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`employee_ID`, `employee_first_name`, `employee_last_name`, `employee_date_joined`, `position_ID`) VALUES
-(1, 'Joe', 'Angel', '2021-10-01', 1),
-(2, 'Chris', 'Oli', '2021-09-10', 2),
-(3, 'Ronald', 'Barr', '2021-08-11', 3),
-(4, 'Jeff ', 'Johnson', '2021-09-01', 4),
-(5, 'Lena', 'Smith', '2021-08-04', 5);
+INSERT INTO `employee` (`employee_ID`, `employee_username`, `employee_password`, `employee_first_name`, `employee_last_name`, `employee_date_joined`, `position_ID`) VALUES
+(1, '', '', 'Joe', 'Angel', '2021-10-01', 1),
+(2, '', '', 'Chris', 'Oli', '2021-09-10', 2),
+(3, '', '', 'Ronald', 'Barr', '2021-08-11', 3),
+(4, '', '', 'Jeff ', 'Johnson', '2021-09-01', 4),
+(6, 'stewcool', '$2y$10$HKpobb/JXLVIZdg6S9VIpOKWHs46yF73kuG6n3omHcM5XWVLQj9YK', 'Stewart', 'Stewartson', '2021-12-06', 2),
+(7, 'drewdoglover4', '$2y$10$UylKzE8ehU/z2VSi.2R2TeF8g974LUDB2xqzoweCVEQSZiyTeQ9/G', 'Drew', 'Ortiz', '2021-12-06', 4);
 
 -- --------------------------------------------------------
 
@@ -204,7 +207,7 @@ ALTER TABLE `animalfood`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employee_ID` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `employee_ID` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
