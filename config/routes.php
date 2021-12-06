@@ -21,6 +21,11 @@ $app->group('/customers', function () {
 $app->group('/employees', function () {
     $this->get('', 'EmployeeController:index');
     $this->get('/{id}', 'EmployeeController:view');
+
+    $this->post('', 'EmployeeController:create');
+    $this->put('/{id}', 'EmployeeController:update');
+    $this->patch('/{id}', 'EmployeeController:update');
+    $this->delete('/{id}', 'EmployeeController:delete');
 });
 
 // Position routes

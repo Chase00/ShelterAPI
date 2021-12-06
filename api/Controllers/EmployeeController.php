@@ -22,4 +22,43 @@ class EmployeeController
         $code = array_key_exists('status', $results) ? 500 : 200;
         return $response->withJson($results, $code, JSON_PRETTY_PRINT);
     }
+
+    // Create an employee when the employee signs up an account
+    public function create(Request $request, Response $response, array $args)
+    {
+
+        // Validation has passed; Proceed to create the employee
+        $employee = Employee::createEmployee($request);
+        $results = [
+            'status' => 'employee created',
+            'data' => $employee
+        ];
+        $code = array_key_exists('status', $results) ? 201 : 500;
+        return $response->withJson($results, $code, JSON_PRETTY_PRINT);
+    }
+
+    // Update an employee
+    public function update(Request $request, Response $response, array $args)
+    {
+
+        $employee = Employee::updateEmployee($request);
+        $results = [
+            'status' => 'employee updated',
+            'data' => $employee
+        ];
+        $code = array_key_exists('status', $results) ? 200 : 500;
+        return $response->withJson($results, $code, JSON_PRETTY_PRINT);
+    }
+
+    // Delete an employee
+    public function delete(Request $request, Response $response, array $args)
+    {
+        $id = $args['id'];
+        Employee::deleteEmployee($id);
+        $results = [
+            'status' => 'employee deleted',
+        ];
+        $code = array_key_exists('status', $results) ? 200 : 500;
+        return $response->withJson($results, 200, JSON_PRETTY_PRINT);
+    }
 }
