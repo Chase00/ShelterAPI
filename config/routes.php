@@ -1,5 +1,7 @@
 <?php
 
+use Shelter\Middleware\Logging as ChatterLogging;
+
 $app->get('/', function ($request, $response, $args) {
     return $response->write('Shelter API default endpoint');
 });
@@ -40,4 +42,5 @@ $app->group('/food', function () {
     $this->get('/{id}', 'FoodController:view');
 });
 
+$app->add(new ChatterLogging());
 $app->run();

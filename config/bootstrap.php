@@ -1,7 +1,13 @@
 <?php
 
+use Shelter\Middleware\Logging as ShelterLogging;
+
 // Load system configuration settings
 $config = require __DIR__ . '/config.php';
+
+// Prepare app
+$app = new \Slim\App(['settings' => $config]);
+$app->add(new ShelterLogging());
 
 // Load the Composer autoloader.
 //require $config['app_root'] . '/vendor/autoload.php';
