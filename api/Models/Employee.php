@@ -4,6 +4,7 @@ namespace Shelter\Models;
 
 use \Illuminate\Database\Eloquent\Model;
 use Shelter\Models\Position;
+use Firebase\JWT\JWT;
 
 class Employee extends Model
 {
@@ -11,6 +12,10 @@ class Employee extends Model
     // The table associated with this model
     protected $table = 'employee';
     protected $primaryKey = 'employee_ID';
+
+    // JWT variables
+    const JWT_KEY = 'my token'; // Any token we like
+    const JWT_EXPIRE = 600; // Expiration period in seconds (10 minutes)
 
     // Relationship: An employee belongs to one position
     public function position(){
@@ -82,5 +87,58 @@ class Employee extends Model
     {
         $employee = self::findOrFail($id);
         return ($employee->delete());
+    }
+
+    // Authenticate an employee by username and password. Return the employee.
+    public static function authenticateEmployee($employee_username, $employee_password)
+    {
+        $employee = self::where('employee_username', $employee_username)->first();
+        if (!$employee) {
+            return false;
+        }
+        return password_verify($employee_password, $employee->password) ? $employee : false;
+    }
+
+    /*
+    * Generate a JWT token.
+    * The signature secret rule: the secret must be at least 12 characters in length;
+    * contain numbers; upper and lowercase letters; and one of the following special characters *&!@%^#$.
+    * For more details, please visit https://github.com/RobDWaller/ReallySimpleJWT
+    */
+
+    public static function generateJWT($id)
+    {
+        // Data for payload
+        $employee = $employee = self::findOrFail($id);
+        if (!$employee) {
+            return false;
+        }
+        $key = self::JWT_KEY;
+        $expiration = time() + self::JWT_EXPIRE;
+        $issuer = 'mychatter-api.com';
+        $token = [
+            'iss' => $issuer,
+            'exp' => $expiration,
+            'isa' => time(),
+            'data' => [
+                'uid' => $id,
+                'name' => $employee->employee_username
+            ]
+        ];
+
+        // Generate and return a token
+        return JWT::encode(
+            $token,   // Data to be encoded in the JWT
+            $key,    // The signing key
+            'HS256'   // Algorithm used to sign the token; defaults to HS256
+        );
+    }
+
+    // Verify a token
+    public static function validateJWT($token)
+    {
+        $decoded = JWT::decode($token, self::JWT_KEY, array('HS256'));
+
+        return $decoded;
     }
 }

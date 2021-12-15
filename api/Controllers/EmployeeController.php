@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Shelter\Models\Employee;
 use Shelter\Validations\Validator;
+use Shelter\Models\Token;
 
 class EmployeeController
 {
@@ -84,5 +85,55 @@ class EmployeeController
         ];
         $code = array_key_exists('status', $results) ? 200 : 500;
         return $response->withJson($results, 200, JSON_PRETTY_PRINT);
+    }
+
+    // Validate an employee with username and password. It returns a Bearer token on success
+    public function authBearer(Request $request, Response $response)
+    {
+        $params = $request->getParsedBody();
+        $employee_username = $params['employee_username'];
+        $employee_password = $params['employee_password'];
+        $employee = Employee::authenticateUser($employee_username, $employee_password);
+        if ($employee) {
+            $status_code = 200;
+            $token = Token::generateBearer($employee->id);
+            $results = [
+                'status' => 'login successful',
+                'token' => $token
+            ];
+        } else {
+            $status_code = 401;
+            $results = [
+                'status' => 'login failed'
+            ];
+        }
+        return $response->withJson($results, $status_code,
+            JSON_PRETTY_PRINT);
+    }
+
+    // Validate an employee with username and password. It returns a JWT token on success.
+    public function authJWT(Request $request, Response $response)
+    {
+        $params = $request->getParsedBody();
+        $username = $params['employee_username'];
+        $password = $params['employee_password'];
+        $employee = Employee::authenticateEmployee($username, $password);
+        if ($employee) {
+            $status_code = 200;
+            $jwt = Employee::generateJWT($employee->id);
+            $results = [
+                'status' => 'login successful',
+                'jwt' => $jwt,
+                'name' => $employee->employee_username
+            ];
+        } else {
+            $status_code = 401;
+            $results = [
+                'status' => 'login failed',
+            ];
+        }
+        //return $results;
+        return $response->withJson($results, $status_code,
+            JSON_PRETTY_PRINT);
     }
 }
