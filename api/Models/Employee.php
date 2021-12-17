@@ -38,14 +38,13 @@ class Employee extends Model
     public static function createEmployee($request)
     {
         // Retrieve parameters from request body
-        $params = $request->getParsedBody();
+        $params = $request->getParsedBody('employee_username');
 
         // Create a new employee instance
         $employee = new Employee();
 
         // Set the employee's attributes
         foreach ($params as $field => $value) {
-
             // Need to hash password
             if ($field == 'employee_password') {
                 $value = password_hash($value, PASSWORD_DEFAULT);
@@ -93,10 +92,11 @@ class Employee extends Model
     public static function authenticateEmployee($employee_username, $employee_password)
     {
         $employee = self::where('employee_username', $employee_username)->first();
+
         if (!$employee) {
             return false;
         }
-        return password_verify($employee_password, $employee->password) ? $employee : false;
+        return password_verify($employee_password, $employee->employee_password) ? $employee : false;
     }
 
     /*
@@ -115,7 +115,7 @@ class Employee extends Model
         }
         $key = self::JWT_KEY;
         $expiration = time() + self::JWT_EXPIRE;
-        $issuer = 'mychatter-api.com';
+        $issuer = 'shelter-api.com';
         $token = [
             'iss' => $issuer,
             'exp' => $expiration,
@@ -125,7 +125,7 @@ class Employee extends Model
                 'name' => $employee->employee_username
             ]
         ];
-
+        print_r($token);
         // Generate and return a token
         return JWT::encode(
             $token,   // Data to be encoded in the JWT

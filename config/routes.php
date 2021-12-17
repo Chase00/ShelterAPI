@@ -51,9 +51,10 @@ $app->group('', function () {
         $this->get('', 'FoodController:index');
         $this->get('/{id}', 'FoodController:view');
     });
-});
-//})->add(new JWTAuthentication());
+//});
+})->add(new JWTAuthentication());
 
+//$app->add(new MyAuthenticator());
 //$app->add(new BasicAuthenticator());
 //$app->add(new BearerAuthenticator());
 //$app->add(new JWTAuthentication());

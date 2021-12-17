@@ -29,16 +29,16 @@ class EmployeeController
     public function create(Request $request, Response $response, array $args)
     {
         // Validate the request
-        $validation = Validator::validateEmployee($request);
-
-        // If validation failed
-        if (!$validation) {
-            $results = [
-                'status' => "Validation failed",
-                'errors' => Validator::getErrors()
-            ];
-            return $response->withJson($results, 500, JSON_PRETTY_PRINT);
-        }
+//        $validation = Validator::validateEmployee($request);
+//
+//        // If validation failed
+//        if (!$validation) {
+//            $results = [
+//                'status' => "Validation failed",
+//                'errors' => Validator::getErrors()
+//            ];
+//            return $response->withJson($results, 500, JSON_PRETTY_PRINT);
+//        }
 
         // Validation has passed; Proceed to create the employee
         $employee = Employee::createEmployee($request);
@@ -87,30 +87,6 @@ class EmployeeController
         return $response->withJson($results, 200, JSON_PRETTY_PRINT);
     }
 
-    // Validate an employee with username and password. It returns a Bearer token on success
-    public function authBearer(Request $request, Response $response)
-    {
-        $params = $request->getParsedBody();
-        $employee_username = $params['employee_username'];
-        $employee_password = $params['employee_password'];
-        $employee = Employee::authenticateUser($employee_username, $employee_password);
-        if ($employee) {
-            $status_code = 200;
-            $token = Token::generateBearer($employee->id);
-            $results = [
-                'status' => 'login successful',
-                'token' => $token
-            ];
-        } else {
-            $status_code = 401;
-            $results = [
-                'status' => 'login failed'
-            ];
-        }
-        return $response->withJson($results, $status_code,
-            JSON_PRETTY_PRINT);
-    }
-
     // Validate an employee with username and password. It returns a JWT token on success.
     public function authJWT(Request $request, Response $response)
     {
@@ -118,9 +94,10 @@ class EmployeeController
         $username = $params['employee_username'];
         $password = $params['employee_password'];
         $employee = Employee::authenticateEmployee($username, $password);
+
         if ($employee) {
             $status_code = 200;
-            $jwt = Employee::generateJWT($employee->id);
+            $jwt = Employee::generateJWT($employee->employee_ID);
             $results = [
                 'status' => 'login successful',
                 'jwt' => $jwt,
