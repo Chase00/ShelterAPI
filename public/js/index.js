@@ -24,9 +24,6 @@ $(function () {
             case 'employee':
                 showEmployee();
                 break;
-            // case 'customer':
-            //     showCustomer();
-            //     break;
             case 'post':
                 showPosts();
                 break;

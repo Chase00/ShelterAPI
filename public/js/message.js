@@ -1,10 +1,10 @@
 //This function displays a message. It includes the message heading and body.
-function showAnimal(heading, body) {
+function showMessage(heading, body) {
     //set the hash
-    window.location.hash = 'animal';
+    window.location.hash = 'message';
 
     //Update the page to display messages
-    updateMain('Animals', heading, '<pre>' + body + '</pre>')
+    updateMain('Messages', heading, '<pre>' + body + '</pre>')
 
     //Toggle the signin and signout links in the nav bar
     if (heading.indexOf('Signup Error') >= 0) {

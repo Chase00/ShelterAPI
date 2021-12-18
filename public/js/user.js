@@ -5,45 +5,15 @@
 function showEmployee() {
     console.log('show all the employees');
 
-    // const url = baseUrl_API + '/employees';
-    // console.log(url)
-    //
-    // fetch(url, {
-    //     method: 'GET',
-    //     headers: new Headers({
-    //         'Access-Control-Allow-Origin': '*',
-    //         'Access-Control-Allow-Methods': '*',
-    //         'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Origin, Origin, X-Requested-With, Accept, Authorization, xxx',
-    //         'Access-Control-Allow-Credentials': 'true',
-    //         'Content-Type': 'application/json',
-    //         'Authorization': 'Bearer ${jwt}'
-    //     })
-    // }).then(checkFetch)
-    //     .then(response => response.json())
-    //     .then(users => displayUsers(users.data))
-    //     .catch(err => console.log(err))
-
-    // $.ajax({
-    //     url: url,
-    //     headers: {'Authorization': 'Bearer ${jwt}'}
-    // }).done(function (data) {
-    //     console.log(data)
-    //     displayUsers(data);
-    // }).fail(function (jqXHR, textStatus) {
-    //     let error = {'code': jqXHR.staus,
-    //         'status':jqXHR.responseJson.status};
-    //     showMessage('Error', JSON.stringify(error, null, 4));
-    // });
-
     const url = baseUrl_API + '/employees';
     $.ajax({
         url: url,
         method: 'GET',
         dataType: 'json',
         headers: {
-            'access-control-allow-origin': '*',
-            'access-control-allow-methods': 'GET, POST, PUT, DELETE',
-            'access-control-allow-headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
         }
     }).done(function (data) {
         console.log(data)
@@ -60,24 +30,24 @@ function showEmployee() {
 function displayUsers(users) {
     let _html;
     _html = `<div class='content-row content-row-header'>
-        <div class='user-name'>Name</div>
-        <div class='user-email'>Email</div>
-        <div class='user-profileicon-phone'>Profile Icon</div>
-        <div class='user-username'>Username</div>
+        <div class='user-name'></div>
+        <div class='user-email'>Username</div>
+        <div class='user-profileicon-phone'>First name</div>
+        <div class='user-username'>Last name</div>
         </div>`;
     for (let x in users) {
         let user = users[x];
         let cssClass = (x % 2 == 0) ? 'content-row' : 'content-row content-row-odd';
-        _html += `<div id='content-row-${user.id}' class='${cssClass}'>
+        _html += `<div id='content-row-${user.employee_ID}' class='${cssClass}'>
             <div class='user-name'>
-                <span class='list-key' data-user='${user.id}' 
-                     onclick=showUserPostsPreview('${user.id}') 
-                     title='Get messages made by the user'>${user.name}
+                <span class='list-key' data-user='${user.employee_ID}' 
+                     onclick=showUserPostsPreview('${user.employee_first_name}') 
+                     title='Get messages made by the user'>${user.employee_first_name}
                 </span>
             </div>
-            <div class='user-email'>${user.email}</div>
-            <div class='user-profileicon'>${user.profile_icon}</div>
-            <div class='user-username'>${user.username}</div>            
+            <div class='user-email'>${user.employee_username}</div>
+            <div class='user-profileicon'>${user.employee_first_name}</div>
+            <div class='user-username'>${user.employee_last_name}</div>            
             </div>`;
     }
     //Finally, update the page
@@ -94,7 +64,6 @@ function displayUsers(users) {
 //Display posts made by a user in a modal
 function showUserPostsPreview(id) {
     console.log('preview a user\'s all posts');
-
 }
 
 
