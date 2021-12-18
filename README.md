@@ -25,3 +25,10 @@ composer update
 ```
 php -S localhost:8000
 ```
+
+
+### Change the baseUrl_API variable in **public/js/index.js** to link to the api folder
+```
+Change to your apache port and to your destination of the project
+In our case, we use http://localhost:8080/I425/Shelter/api
+```
