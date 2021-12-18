@@ -21,7 +21,7 @@ https://chase-1.gitbook.io/shelterapi/
 composer update
 ```
 
-### Run:
+### Run in 'public' folder:
 ```
 php -S localhost:8000
 ```
